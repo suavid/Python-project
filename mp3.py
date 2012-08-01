@@ -112,6 +112,7 @@ class ventana:
 		self.tabla.show()
 		self.caja.show()
 		self.window.show()
+# Ejecutando 
 if __name__=="__main__":
 	mainFrame = ventana()
 	mainFrame.main()
