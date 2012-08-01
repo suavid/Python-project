@@ -1,15 +1,25 @@
 #!/bin/python
-
+# Agregando librerias necesarias para la generacion de ventanas
+# Import the libs to generate windows managed by  the window manager
 import pygtk
+# Evitar ejecucion de versiones anteriores
+# Stop previous version
 pygtk.require("2.0")
 import gtk
-
+# Clase principal
+# Main class
 class ventana:
+	# Evento de borrado
+	# Delete event, True will stop destroy event, False will start destroy envet
 	def delete(self, widget, data = None):
 		return False
+	# Stop main()
+	# Detiene manejadores de enventos, termina ejecucion de la ventana
 	def close(self, widget, data = None):
 		gtk.main_quit()
 	def main(self):
+	# Inicia manejadores de eventos 
+	# Start main()
 		gtk.main()
 	def __init__(self):
 		# Ventana gestionada por el manejador de ventana del sistema
