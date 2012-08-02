@@ -6,6 +6,23 @@ import pygtk
 # Stop previous version
 pygtk.require("2.0")
 import gtk
+
+def button(parent,icon,label_text):
+	# Crear caja para icon y label
+	box = gtk.HBox(True, 0)
+	box.set_border_width(2)
+	# Creamos la imagen
+	image = gtk.Image()
+	image.set_from_file(icon)
+	# Creamos la etiqueta
+	label = gtk.Label(label_text)
+	# Empaquetamos icon y label en la caja
+	box.pack_start(image, gtk.FALSE, gtk.FALSE, 3)
+	box.pack_start(label, gtk.FALSE, gtk.FALSE, 3)
+	image.show()
+	label.show()
+	return box;
+
 # Clase principal
 # Main class
 class ventana:
@@ -47,36 +64,11 @@ class ventana:
 		self.pause = gtk.Button()
 		# Fin de la creacion de botones
 		# Iconos para los botones
-		self.playIcon = gtk.Image()
-		self.stopIcon = gtk.Image()
-		self.nextIcon = gtk.Image()
-		self.prevIcon = gtk.Image()
-		self.pauseIcon = gtk.Image()
-		self.plB = gtk.HBox(True,0)
-		self.stB = gtk.HBox(True,0)
-		self.neB = gtk.HBox(True,0)
-		self.prB = gtk.HBox(True,0)
-		self.paB = gtk.HBox(True,0)
-		self.plT = gtk.Label("Reproducir")
-		self.stT = gtk.Label("Detener")
-		self.neT = gtk.Label("Siguiente")
-		self.prT = gtk.Label("Anterior")
-		self.paT = gtk.Label("Pausar")
-		self.playIcon.set_from_file("play.png")
-		self.stopIcon.set_from_file("stop.png")
-		self.nextIcon.set_from_file("next.png")
-		self.prevIcon.set_from_file("prev.png")
-		self.pauseIcon.set_from_file("pause.png")
-		self.plB.pack_start(self.plT)
-		self.plB.pack_start(self.playIcon)
-		self.stB.pack_start(self.stT)
-		self.stB.pack_start(self.stopIcon)
-		self.neB.pack_start(self.neT)
-		self.neB.pack_start(self.nextIcon)
-		self.prB.pack_start(self.prT)
-		self.prB.pack_start(self.prevIcon)
-		self.paB.pack_start(self.paT)
-		self.paB.pack_start(self.pauseIcon)
+		self.plB = button(self.window,"play.png","Reproducir")
+		self.stB = button(self.window,"stop.png","Parar")
+		self.neB = button(self.window,"next.png","Siguiente")
+		self.prB = button(self.window,"prev.png","Anterior")
+		self.paB = button(self.window,"pause.png","Pausa")
 		# Fin de la creacion de los iconos
 		# Agregando iconos
 		self.play.add(self.plB)
@@ -98,16 +90,6 @@ class ventana:
 		# Agregando un valor de espaciado a la tabla
 		self.tabla.set_col_spacings(2)
 		# Mostrando los respectivos elementos
-		self.plT.show()
-		self.stT.show()
-		self.neT.show()
-		self.prT.show()
-		self.paT.show()
-		self.playIcon.show()
-		self.stopIcon.show()
-		self.nextIcon.show()
-		self.prevIcon.show()
-		self.pauseIcon.show()
 		self.plB.show()
 		self.stB.show()
 		self.neB.show()
