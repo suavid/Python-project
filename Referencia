@@ -1,5 +1,6 @@
-# !IMPORTANTE: ESTE ARCHIVO ES MODIFICABLE, NO SE PERMITE BORRAR PARTES DE EL, SOLO AGREGAR, A PESAR QUE ALGUNA FUNCION SEA REMOVIDA
-# POR MOTIVOS DIDACTICOS ES PREFERIBLE QUE LO YA AGREGADO SE MANTENGA
+# !IMPORTANTE: ESTE ARCHIVO ES MODIFICABLE, NO SE PERMITE BORRAR PARTES DE EL, SOLO AGREGAR, 
+# A PESAR QUE ALGUNA FUNCION SEA REMOVIDA POR MOTIVOS DIDACTICOS ES PREFERIBLE QUE LO YA
+# AGREGADO SE MANTENGA
 
 # Agrego partes importantes del codigo que se van utilizando en el programa para que sea mas facil que 
 # puedan seguir colaborando con el desarrollo de este proyecto y les sea mas facil entender el codigo.
@@ -27,8 +28,18 @@
 	def delete(self, widget, data = None):
 			return False
 
-# 4-) Esta es la funcion llamada por el evento destroy que cierra definitivamente la ventana, contrario 
+# 4-) Esta es la funcion llamada por el evento destroy que cierra definitivamente la ventana, contrario a 
       main()
 
 	def close(self, widget, data = None):
-		gtk.main_quit() 
+		gtk.main_quit()
+ 
+# 5-) Por el momento aqui se mantienen las funciones principales del programa, respetar la sintaxis
+	
+	def __init__(self):
+
+# 6-) se crea un varible llamada window, (El nombre es arbitrario), esta almacenara una referencia a la ventana
+      por medio de gtk se crea la ventana nueva, WINDOW_TOPLEVEL indica que los contronos serán manejados por el 
+      gestor de ventanas del OS
+	
+	self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
