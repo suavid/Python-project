@@ -17,8 +17,8 @@ def button(parent,icon,label_text):
 	# Creamos la etiqueta
 	label = gtk.Label(label_text)
 	# Empaquetamos icon y label en la caja
-	box.pack_start(image, False, gtk.FALSE, 3)
-	box.pack_start(label, False, gtk.FALSE, 3)
+	box.pack_start(image, False, False, 3)
+	box.pack_start(label, False, False, 3)
 	image.show()
 	label.show()
 	return box;
