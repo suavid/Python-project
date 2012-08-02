@@ -74,7 +74,7 @@ class ventana:
 		self.window.set_border_width(0)
 
 		# Creacion de las tablas y cajas
-		self.tabla = gtk.Table(5,1,True)
+		self.tabla = gtk.Table(10,1,True)
 		self.caja = gtk.VBox(False, 0)
 		self.caja2 = gtk.VBox(True, 0)
 
@@ -88,9 +88,9 @@ class ventana:
 		self.menu3 = gtk.Menu()
   		self.item1 = gtk.MenuItem("Abrir")
   		self.item2 = gtk.MenuItem("Actualizar")
-  		self.item3 = gtk.MenuItem("importar")
+  		self.item3 = gtk.MenuItem("Importar")
 		self.item4 = gtk.MenuItem("Preferencias")
-		self.item5 = gtk.MenuItem("Referencia")
+		self.item5 = gtk.MenuItem("Help F2")
 		self.item1.show()
   		self.item2.show()
   		self.item3.show()
@@ -116,17 +116,22 @@ class ventana:
 		self.menu_bar.append(self.editar)
 		self.menu_bar.append(self.ayuda)
 
+
+                        
+                
 		# Control de volumen 
 		self.ajuste = gtk.Adjustment(0.0, 0.0, 101.0, 0.1, 1.0, 1.0)
 		self.control = gtk.HScale(self.ajuste)
 		scale_set_default_values(self.control)
-
+                self.vIcon = gtk.Image()
+                self.vIcon.set_from_file("volumen.png") 
+                
 		# Botones para el reproductor
-		self.plB = buttonBox(self.window,"play.png","Reproducir")
-		self.stB = buttonBox(self.window,"stop.png","Parar")
-		self.neB = buttonBox(self.window,"next.png","Siguiente")
-		self.prB = buttonBox(self.window,"prev.png","Anterior")
-		self.paB = buttonBox(self.window,"pause.png","Pausar")
+		self.plB = buttonBox2(self.window,"play.png")
+		self.stB = buttonBox2(self.window,"stop.png")
+		self.neB = buttonBox2(self.window,"next.png")
+		self.prB = buttonBox2(self.window,"prev.png")
+		self.paB = buttonBox2(self.window,"pause.png")
 		self.play = gtk.Button()
 		self.stop = gtk.Button()
 		self.next = gtk.Button()
@@ -138,21 +143,23 @@ class ventana:
 		self.prev.add(self.prB)
 		self.pause.add(self.paB)
 		# Pocisionando en tabla
-		self.tabla.attach(self.play,0,1,0,1)
-		self.tabla.attach(self.stop,1,2,0,1)
-		self.tabla.attach(self.next,2,3,0,1)
-		self.tabla.attach(self.prev,3,4,0,1)
-		self.tabla.attach(self.pause,4,5,0,1)
+		self.tabla.attach(self.play,0,1,0,1,gtk.FILL,gtk.FILL,0,0)
+		self.tabla.attach(self.stop,1,2,0,1,gtk.FILL,gtk.FILL,0,0)
+		self.tabla.attach(self.next,2,3,0,1,gtk.FILL,gtk.FILL,0,0)
+		self.tabla.attach(self.prev,3,4,0,1,gtk.FILL,gtk.FILL,0,0)
+		self.tabla.attach(self.pause,4,5,0,1,gtk.FILL,gtk.FILL,0,0)
+		self.tabla.attach(self.vIcon,6,7,0,1,gtk.FILL,gtk.FILL,0,0)
+		self.tabla.attach(self.control,7,8,0,1,gtk.FILL,gtk.FILL,0,0)
 
 		# Empaquetados
-		self.caja.pack_start(self.menu_bar)
-		self.caja.pack_start(self.caja2)
-		self.caja.pack_start(self.entry)
-		self.caja2.pack_start(self.tabla)
-		self.caja2.pack_start(self.control) 
+		self.caja.pack_start(self.menu_bar,False,False,0)
+		self.caja.pack_start(self.caja2,False,False,0)
+		self.caja.pack_start(self.entry,False,False,0)
+		self.caja2.pack_start(self.tabla,False,False,0)
 		self.window.add(self.caja)
 
 		# Mostrando los respectivos elementos
+		self.vIcon.show()
 		self.entry.show()
 		self.plB.show()
 		self.stB.show()
