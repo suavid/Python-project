@@ -52,7 +52,7 @@ class ventana:
 		# Creacion de la tabla que contiene los botones
 		self.tabla = gtk.Table(1,5,True)
 		# Control de volumen 
-		self.ajuste = gtk.Adjustment(0,0,50,5,10,50)
+		self.ajuste = gtk.Adjustment(0,0,10,2,3,10)
 		self.control = gtk.HScale(self.ajuste)
 		# Creacion de la caja principal
 		self.caja = gtk.HBox(True, 0)
