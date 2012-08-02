@@ -12,7 +12,6 @@ def buttonBox(parent,icon,label_text):
 
 	# Crear caja para icon y label
 	box = gtk.HBox(True, 0)
-	box.set_border_width(2)
 	# Creamos la imagen
 	image = gtk.Image()
 	image.set_from_file(icon)
@@ -72,12 +71,16 @@ class ventana:
 		self.window.connect("delete_event",self.delete)
 		self.window.connect("destroy",self.close)
 		self.window.set_title("Reproductor Mp3")
-		self.window.set_border_width(10)
+		self.window.set_border_width(0)
 
 		# Creacion de las tablas y cajas
-		self.tabla = gtk.Table(1,5,False)
+		self.tabla = gtk.Table(5,1,True)
 		self.caja = gtk.VBox(False, 0)
-		self.caja2 = gtk.HBox(True, 0)
+		self.caja2 = gtk.VBox(True, 0)
+
+		#Entrada de texto para busqueda
+		self.entry = gtk.Entry(0)
+		self.entry.set_text("Busqueda...")
 
 		# menu
 		self.menu = gtk.Menu()
@@ -136,19 +139,21 @@ class ventana:
 		self.pause.add(self.paB)
 		# Pocisionando en tabla
 		self.tabla.attach(self.play,0,1,0,1)
-		self.tabla.attach(self.stop,0,1,1,2)
-		self.tabla.attach(self.next,0,1,2,3)
-		self.tabla.attach(self.prev,0,1,3,4)
-		self.tabla.attach(self.pause,0,1,4,5)
+		self.tabla.attach(self.stop,1,2,0,1)
+		self.tabla.attach(self.next,2,3,0,1)
+		self.tabla.attach(self.prev,3,4,0,1)
+		self.tabla.attach(self.pause,4,5,0,1)
 
 		# Empaquetados
 		self.caja.pack_start(self.menu_bar)
 		self.caja.pack_start(self.caja2)
+		self.caja.pack_start(self.entry)
 		self.caja2.pack_start(self.tabla)
 		self.caja2.pack_start(self.control) 
 		self.window.add(self.caja)
 
 		# Mostrando los respectivos elementos
+		self.entry.show()
 		self.plB.show()
 		self.stB.show()
 		self.neB.show()
