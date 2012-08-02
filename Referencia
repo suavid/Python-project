@@ -64,3 +64,21 @@
 # Los argumentos expand, fill y padding tienen los valores predeterminados 
 # (o "por defecto") mostrados arriba. El argumento child debe especificarse 
 # obligatoriamente al no tener un valor predeterminado.
+
+# 8-) Creacion de una tabla para empaquetar
+
+	'table' = gtk.Table(rows=1, columns=1, homogeneous=FALSE)
+
+# Obsérvese que el sistema de coordenadas tiene su orgien en la esquina superior 
+# izquierda. Para introducir un control en una caja, se usa el siguiente método:
+
+  	table.attach(child, left_attach, right_attach, top_attach, bottom_attach,
+	xoptions=EXPAND|FILL, yoptions=EXPAND|FILL, xpadding=0, ypadding=0)
+
+# Los pasos generales para usar un control (widget) en PyGTK son:
+
+  #  Se llama a gtk.* (una de las múltiples funciones para crear un nuevo control, y que se detallan en esta sección.
+  #  Se conectan todas la señales y eventos que queramos usar a los manejadores apropiados.
+  #  Se establecen los atributos del control.
+  #  Se empaqueta el control dentro de un contenedor usando una llamada como gtk.Container.add() o gtk.Box.pack_start().
+  #  Se llama a gtk.Widget.show() en el control.
