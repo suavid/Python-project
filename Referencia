@@ -1,0 +1,10 @@
+# Agrego partes importantes del codigo que se van utilizando en el programa para que sea mas facil que 
+# puedan seguir colaborando con el desarrollo de este proyecto y les sea mas facil entender el codigo.
+
+# Metodo main() es el que inicializa los eventos de las ventanas, atravez del objeto gtk
+# hacemos la llamada a gtk.main()
+
+	def main(self):
+		gtk.main()
+
+# Esto da por finalizado el metodo que activa los eventos de la ventana 
