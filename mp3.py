@@ -1,18 +1,15 @@
 #!/bin/python
 
-# Agregando librerias necesarias para la generacion de ventanas
-# Import the libs to generate windows managed by  the window manager
-
+# agregando librerias necesarias para la generacion de ventanas
+# evitar ejecucion de versiones anteriores
 import pygtk
-
-# Evitar ejecucion de versiones anteriores
-# Stop previous version
-
 pygtk.require("2.0")
 import gtk
 
+
 # funcion para creacion de botones con etiqueta e imagen
 def buttonBox(parent,icon,label_text):
+
 	# Crear caja para icon y label
 	box = gtk.HBox(True, 0)
 	box.set_border_width(2)
@@ -30,6 +27,7 @@ def buttonBox(parent,icon,label_text):
 
 # funcion para creacion de botones con imagen sin etiqueta
 def buttonBox2(parent,icon):
+
 	# Crear caja para icon
 	box = gtk.HBox(True, 0)
 	box.set_border_width(2)
@@ -43,6 +41,7 @@ def buttonBox2(parent,icon):
 
 # funcion para poner la escala a valores iniciales
 def scale_set_default_values(scale):
+
 	# politica de actualizacion 
 	scale.set_update_policy(gtk.UPDATE_CONTINUOUS)
 	# digitos a mostrar en la escala
@@ -52,58 +51,84 @@ def scale_set_default_values(scale):
 	# dibujado
 	scale.set_draw_value(True)
 
-# Clase principal
-# Main class
+# clase principal
 class ventana:
-	# Evento de borrado
-	# Delete event, True will stop destroy event, False will start destroy envet
+
+	# evento de borrado
 	def delete(self, widget, data = None):
 		return False
-	# Stop main()
-	# Detiene manejadores de enventos, termina ejecucion de la ventana
+
+	# detiene manejadores de enventos, termina ejecucion de la ventana
 	def close(self, widget, data = None):
 		gtk.main_quit()
+
 	def main(self):
-	# Inicia manejadores de eventos 
-	# Start main()
+	# inicia manejadores de eventos 
 		gtk.main()
+
 	def __init__(self):
 		# Ventana gestionada por el manejador de ventana del sistema
 		self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-		# Llamada al evento que borrado de ventana
 		self.window.connect("delete_event",self.delete)
-		# Llamada al evento destructor de la ventana
 		self.window.connect("destroy",self.close)
-		# Pone el titulo de la ventana
 		self.window.set_title("Reproductor Mp3")
-		# Valor del borde interno de la ventana
 		self.window.set_border_width(10)
-		# Creacion de la tabla que contiene los botones
+
+		# Creacion de las tablas y cajas
 		self.tabla = gtk.Table(1,5,False)
-		self.tabla2 = gtk.Table(1,5,False)
+		self.caja = gtk.VBox(False, 0)
+		self.caja2 = gtk.HBox(True, 0)
+
+		# menu
+		self.menu = gtk.Menu()
+		self.menu2 = gtk.Menu()
+		self.menu3 = gtk.Menu()
+  		self.item1 = gtk.MenuItem("Abrir")
+  		self.item2 = gtk.MenuItem("Actualizar")
+  		self.item3 = gtk.MenuItem("importar")
+		self.item4 = gtk.MenuItem("Preferencias")
+		self.item5 = gtk.MenuItem("Referencia")
+		self.item1.show()
+  		self.item2.show()
+  		self.item3.show()
+		self.item4.show()
+		self.item5.show()
+ 		self.menu.append(self.item1)
+  		self.menu.append(self.item2)
+  		self.menu.append(self.item3)
+		self.menu2.append(self.item4)
+		self.menu3.append(self.item5)
+		self.archivo = gtk.MenuItem("Archivo")
+		self.editar = gtk.MenuItem("Editar")
+		self.ayuda = gtk.MenuItem("Ayuda")
+		self.archivo.set_submenu(self.menu)
+		self.editar.set_submenu(self.menu2)
+		self.ayuda.set_submenu(self.menu3)
+		self.archivo.show()
+		self.editar.show()
+		self.ayuda.show()
+		self.menu_bar = gtk.MenuBar()
+		self.menu_bar.show()	
+		self.menu_bar.append(self.archivo)
+		self.menu_bar.append(self.editar)
+		self.menu_bar.append(self.ayuda)
+
 		# Control de volumen 
 		self.ajuste = gtk.Adjustment(0.0, 0.0, 101.0, 0.1, 1.0, 1.0)
 		self.control = gtk.HScale(self.ajuste)
 		scale_set_default_values(self.control)
-		# Creacion de la caja principal
-		self.caja = gtk.HBox(True, 0)
+
 		# Botones para el reproductor
-		self.play = gtk.Button()
-		self.stop = gtk.Button()
-		self.next = gtk.Button()
-		self.prev = gtk.Button()
-		self.pause = gtk.Button()
-		# Fin de la creacion de botones
-		# Iconos para los botones
 		self.plB = buttonBox(self.window,"play.png","Reproducir")
 		self.stB = buttonBox(self.window,"stop.png","Parar")
 		self.neB = buttonBox(self.window,"next.png","Siguiente")
 		self.prB = buttonBox(self.window,"prev.png","Anterior")
 		self.paB = buttonBox(self.window,"pause.png","Pausar")
-		# volumen
-		self.vol = buttonBox(self.window,"volumen.png","Volumen")
-		# Fin de la creacion de los iconos
-		# Agregando iconos
+		self.play = gtk.Button()
+		self.stop = gtk.Button()
+		self.next = gtk.Button()
+		self.prev = gtk.Button()
+		self.pause = gtk.Button()
 		self.play.add(self.plB)
 		self.stop.add(self.stB)
 		self.next.add(self.neB)
@@ -115,17 +140,15 @@ class ventana:
 		self.tabla.attach(self.next,0,1,2,3)
 		self.tabla.attach(self.prev,0,1,3,4)
 		self.tabla.attach(self.pause,0,1,4,5)
-		self.tabla2.attach(self.vol,0,1,0,1)
-		self.tabla2.attach(self.control,0,1,1,2)
-		# Empaquetando la tabla dentro de la caja
-		self.caja.pack_start(self.tabla)
-		self.caja.pack_start(self.tabla2)
-		# Agregando la caja a la ventana 
+
+		# Empaquetados
+		self.caja.pack_start(self.menu_bar)
+		self.caja.pack_start(self.caja2)
+		self.caja2.pack_start(self.tabla)
+		self.caja2.pack_start(self.control) 
 		self.window.add(self.caja)
-		# Agregando un valor de espaciado a la tabla
-		self.tabla.set_col_spacings(2)
+
 		# Mostrando los respectivos elementos
-		self.vol.show()
 		self.plB.show()
 		self.stB.show()
 		self.neB.show()
@@ -138,10 +161,11 @@ class ventana:
 		self.pause.show()
 		self.control.show()
 		self.tabla.show()
-		self.tabla2.show()
 		self.caja.show()
+		self.caja2.show()
 		self.window.show()
-# Ejecutando 
+
+# programa principal
 if __name__=="__main__":
 	mainFrame = ventana()
 	mainFrame.main()
