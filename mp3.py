@@ -82,11 +82,7 @@ class ventana:
 		self.tabla = gtk.Table(1,5,False)
 		self.tabla2 = gtk.Table(1,5,False)
 		# Control de volumen 
-<<<<<<< HEAD
 		self.ajuste = gtk.Adjustment(0.0, 0.0, 101.0, 0.1, 1.0, 1.0)
-=======
-		self.ajuste = gtk.Adjustment(0,0,10,2,3,10)
->>>>>>> 912bb8b4fd75c82c689e0b4ff6446e9b3bf0c138
 		self.control = gtk.HScale(self.ajuste)
 		scale_set_default_values(self.control)
 		# Creacion de la caja principal
