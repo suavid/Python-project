@@ -1,13 +1,18 @@
 #!/bin/python
+
 # Agregando librerias necesarias para la generacion de ventanas
 # Import the libs to generate windows managed by  the window manager
+
 import pygtk
+
 # Evitar ejecucion de versiones anteriores
 # Stop previous version
+
 pygtk.require("2.0")
 import gtk
 
-def button(parent,icon,label_text):
+# funcion para creacion de botones con etiqueta e imagen
+def buttonBox(parent,icon,label_text):
 	# Crear caja para icon y label
 	box = gtk.HBox(True, 0)
 	box.set_border_width(2)
@@ -22,6 +27,30 @@ def button(parent,icon,label_text):
 	image.show()
 	label.show()
 	return box;
+
+# funcion para creacion de botones con imagen sin etiqueta
+def buttonBox2(parent,icon):
+	# Crear caja para icon
+	box = gtk.HBox(True, 0)
+	box.set_border_width(2)
+	# Creamos la imagen
+	image = gtk.Image()
+	image.set_from_file(icon)
+	# Empaquetamos icon en la caja
+	box.pack_start(image, False, False, 3)
+	image.show()
+	return box;
+
+# funcion para poner la escala a valores iniciales
+def scale_set_default_values(scale):
+	# politica de actualizacion 
+	scale.set_update_policy(gtk.UPDATE_CONTINUOUS)
+	# digitos a mostrar en la escala
+	scale.set_digits(1)
+	# pocision pre definida
+	scale.set_value_pos(gtk.POS_TOP)
+	# dibujado
+	scale.set_draw_value(True)
 
 # Clase principal
 # Main class
@@ -50,10 +79,12 @@ class ventana:
 		# Valor del borde interno de la ventana
 		self.window.set_border_width(10)
 		# Creacion de la tabla que contiene los botones
-		self.tabla = gtk.Table(1,5,True)
+		self.tabla = gtk.Table(1,5,False)
+		self.tabla2 = gtk.Table(1,5,False)
 		# Control de volumen 
-		self.ajuste = gtk.Adjustment(0,0,50,5,10,50)
+		self.ajuste = gtk.Adjustment(0.0, 0.0, 101.0, 0.1, 1.0, 1.0)
 		self.control = gtk.HScale(self.ajuste)
+		scale_set_default_values(self.control)
 		# Creacion de la caja principal
 		self.caja = gtk.HBox(True, 0)
 		# Botones para el reproductor
@@ -64,11 +95,13 @@ class ventana:
 		self.pause = gtk.Button()
 		# Fin de la creacion de botones
 		# Iconos para los botones
-		self.plB = button(self.window,"play.png","Reproducir")
-		self.stB = button(self.window,"stop.png","Parar")
-		self.neB = button(self.window,"next.png","Siguiente")
-		self.prB = button(self.window,"prev.png","Anterior")
-		self.paB = button(self.window,"pause.png","Pausa")
+		self.plB = buttonBox(self.window,"play.png","Reproducir")
+		self.stB = buttonBox(self.window,"stop.png","Parar")
+		self.neB = buttonBox(self.window,"next.png","Siguiente")
+		self.prB = buttonBox(self.window,"prev.png","Anterior")
+		self.paB = buttonBox(self.window,"pause.png","Pausar")
+		# volumen
+		self.vol = buttonBox(self.window,"volumen.png","Volumen")
 		# Fin de la creacion de los iconos
 		# Agregando iconos
 		self.play.add(self.plB)
@@ -82,14 +115,17 @@ class ventana:
 		self.tabla.attach(self.next,0,1,2,3)
 		self.tabla.attach(self.prev,0,1,3,4)
 		self.tabla.attach(self.pause,0,1,4,5)
+		self.tabla2.attach(self.vol,0,1,0,1)
+		self.tabla2.attach(self.control,0,1,1,2)
 		# Empaquetando la tabla dentro de la caja
 		self.caja.pack_start(self.tabla)
-		self.caja.pack_start(self.control)
+		self.caja.pack_start(self.tabla2)
 		# Agregando la caja a la ventana 
 		self.window.add(self.caja)
 		# Agregando un valor de espaciado a la tabla
 		self.tabla.set_col_spacings(2)
 		# Mostrando los respectivos elementos
+		self.vol.show()
 		self.plB.show()
 		self.stB.show()
 		self.neB.show()
@@ -102,9 +138,11 @@ class ventana:
 		self.pause.show()
 		self.control.show()
 		self.tabla.show()
+		self.tabla2.show()
 		self.caja.show()
 		self.window.show()
 # Ejecutando 
 if __name__=="__main__":
 	mainFrame = ventana()
 	mainFrame.main()
+
