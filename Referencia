@@ -2,6 +2,9 @@
 # A PESAR QUE ALGUNA FUNCION SEA REMOVIDA POR MOTIVOS DIDACTICOS ES PREFERIBLE QUE LO YA
 # AGREGADO SE MANTENGA
 
+# NOTA: lo que aparece entre comillas simples ('') representa un nombre de variable que es
+# arbitrario, es decir, se decide cuando se escribe el codigo
+
 # Agrego partes importantes del codigo que se van utilizando en el programa para que sea mas facil que 
 # puedan seguir colaborando con el desarrollo de este proyecto y les sea mas facil entender el codigo.
 
@@ -39,7 +42,25 @@
 	def __init__(self):
 
 # 6-) se crea un varible llamada window, (El nombre es arbitrario), esta almacenara una referencia a la ventana
-      por medio de gtk se crea la ventana nueva, WINDOW_TOPLEVEL indica que los contronos serán manejados por el 
-      gestor de ventanas del OS
+#      por medio de gtk se crea la ventana nueva, WINDOW_TOPLEVEL indica que los contronos serán manejados por el 
+#      gestor de ventanas del OS
 	
 	self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+
+# 7-) homogeneous es el parametro que indica si todos los elementos empaquetados en la caja tendrán 
+#     las mismas dimensiones, Las funciones que nos permiten crear una caja nueva son:
+
+  	'hbox' = gtk.HBox(homogeneous=FALSE, spacing=0)
+
+  	'vbox' = gtk.VBox(homogeneous=FALSE, spacing=0)
+
+# 'box' hace referencia a la variable que almacena la caja creada.    
+
+	'box'.pack_start(child, expand=TRUE, fill=TRUE, padding=0)
+
+	'box'.pack_end(child, expand=TRUE, fill=TRUE, padding=0)
+
+# child, expand, fill y padding son palabras clave (argumentos con nombre). 
+# Los argumentos expand, fill y padding tienen los valores predeterminados 
+# (o "por defecto") mostrados arriba. El argumento child debe especificarse 
+# obligatoriamente al no tener un valor predeterminado.
