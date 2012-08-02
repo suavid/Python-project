@@ -262,3 +262,15 @@ gobject.GObject
   gtk.VSeparator (Separador Vertical)
   gtk.HSeparator (Separador Horizontal)
 
+# El control Botón tiene las siguientes señales:
+
+#      pressed - se emite cuando el botón del puntero se presiona en el control Botón
+
+#      released - se emite cuando el botón del puntero se suelta en el control Botón
+
+#      clicked - se emite cuando el botón del puntero se presiona y luego se
+#      suelta sobre el control Botón
+
+#      enter - se emite cuando el puntero entra en el control Botón
+
+#      leave - se emite cuando el puntero sale del control Botón
