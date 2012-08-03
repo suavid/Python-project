@@ -74,9 +74,11 @@ class ventana:
 		self.window.set_border_width(0)
 
 		# Creacion de las tablas y cajas
-		self.tabla = gtk.Table(10,1,True)
+		self.tabla = gtk.Table(9,1,True)
+		self.tabla2 = gtk.Table(3,1,True)
+		self.tabla3 = gtk.Table(1,1,False)
 		self.caja = gtk.VBox(False, 0)
-		self.caja2 = gtk.VBox(True, 0)
+		self.caja2 = gtk.HBox(False, 0)
 
 		#Entrada de texto para busqueda
 		self.entry = gtk.Entry(0)
@@ -148,14 +150,16 @@ class ventana:
 		self.tabla.attach(self.next,2,3,0,1,gtk.FILL,gtk.FILL,0,0)
 		self.tabla.attach(self.prev,3,4,0,1,gtk.FILL,gtk.FILL,0,0)
 		self.tabla.attach(self.pause,4,5,0,1,gtk.FILL,gtk.FILL,0,0)
-		self.tabla.attach(self.vIcon,6,7,0,1,gtk.FILL,gtk.FILL,0,0)
-		self.tabla.attach(self.control,7,8,0,1,gtk.FILL,gtk.FILL,0,0)
+		self.tabla3.attach(self.vIcon,0,1,0,1,gtk.FILL,gtk.FILL,10,10)
+		self.tabla2.attach(self.control,1,2,0,1,gtk.FILL,gtk.FILL,0,0)
+		self.tabla2.attach(self.entry,0,1,0,1,gtk.FILL,gtk.FILL,10,10)
 
 		# Empaquetados
 		self.caja.pack_start(self.menu_bar,False,False,0)
 		self.caja.pack_start(self.caja2,False,False,0)
-		self.caja.pack_start(self.entry,False,False,0)
 		self.caja2.pack_start(self.tabla,False,False,0)
+		self.caja2.pack_start(self.tabla2,False,False,0)
+		self.caja2.pack_start(self.tabla3,False,False,0)
 		self.window.add(self.caja)
 
 		# Mostrando los respectivos elementos
@@ -173,6 +177,8 @@ class ventana:
 		self.pause.show()
 		self.control.show()
 		self.tabla.show()
+		self.tabla2.show()
+		self.tabla3.show()
 		self.caja.show()
 		self.caja2.show()
 		self.window.show()
