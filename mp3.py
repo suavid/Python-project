@@ -60,6 +60,7 @@ class ventana:
                 #Selector de ficheros
 		filew = gtk.FileSelection("Seleccionar carpeta")
 		filew.ok_button.connect("clicked", self.file_ok_sel,filew)
+		filew.ok_button.connect("clicked", lambda w: filew.destroy())
 		filew.cancel_button.connect("clicked",lambda w: filew.destroy())
                 filew.show()
         
@@ -82,14 +83,15 @@ class ventana:
 		self.window.connect("destroy",self.close)
 		self.window.set_title("Reproductor Mp3")
 		self.window.set_border_width(0)
-
+                
 		# Creacion de las tablas y cajas
 		self.tabla = gtk.Table(9,1,True)
 		self.tabla2 = gtk.Table(3,1,True)
 		self.tabla3 = gtk.Table(1,1,False)
 		self.caja = gtk.VBox(False, 0)
 		self.caja2 = gtk.HBox(False, 0)
-
+                self.directorio = " "
+                
 		#Entrada de texto para busqueda
 		self.entry = gtk.Entry(0)
 		self.entry.set_text("Busqueda...")
@@ -131,10 +133,9 @@ class ventana:
 
                 #Seccion con barras de desplazamiento
 		self.scrolled_window = gtk.ScrolledWindow()
-		self.scrolled_window.set_border_width(10)
+		self.scrolled_window.set_border_width(0)
 		self.scrolled_window.set_policy(gtk.POLICY_ALWAYS, gtk.POLICY_ALWAYS)
 
-                
 		# Control de volumen 
 		self.ajuste = gtk.Adjustment(0.0, 0.0, 101.0, 0.1, 1.0, 1.0)
 		self.control = gtk.HScale(self.ajuste)
@@ -170,8 +171,8 @@ class ventana:
 
 		# Empaquetados
 		self.caja.pack_start(self.menu_bar,False,False,0)
-		self.caja.pack_start(self.caja2,False,False,0)
 		self.caja.pack_start(self.scrolled_window,False,False,0)
+		self.caja.pack_start(self.caja2,False,False,0)
 		self.caja2.pack_start(self.tabla,False,False,0)
 		self.caja2.pack_start(self.tabla2,False,False,0)
 		self.caja2.pack_start(self.tabla3,False,False,0)
