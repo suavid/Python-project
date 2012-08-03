@@ -53,9 +53,14 @@ def scale_set_default_values(scale):
 # clase principal
 class ventana:
 
+        def file_ok_sel(self, w,campo):
+                self.directorio = campo.get_filename()
+                
         def importar(self,widget, data = None):
                 #Selector de ficheros
-		filew = gtk.FileSelection("File selection")
+		filew = gtk.FileSelection("Seleccionar carpeta")
+		filew.ok_button.connect("clicked", self.file_ok_sel,filew)
+		filew.cancel_button.connect("clicked",lambda w: filew.destroy())
                 filew.show()
         
 	# evento de borrado
@@ -123,6 +128,11 @@ class ventana:
 		self.menu_bar.append(self.archivo)
 		self.menu_bar.append(self.editar)
 		self.menu_bar.append(self.ayuda)
+
+                #Seccion con barras de desplazamiento
+		self.scrolled_window = gtk.ScrolledWindow()
+		self.scrolled_window.set_border_width(10)
+		self.scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
                 
 		# Control de volumen 
 		self.ajuste = gtk.Adjustment(0.0, 0.0, 101.0, 0.1, 1.0, 1.0)
@@ -160,12 +170,14 @@ class ventana:
 		# Empaquetados
 		self.caja.pack_start(self.menu_bar,False,False,0)
 		self.caja.pack_start(self.caja2,False,False,0)
+		self.caja.pack_start(self.scrolled_window,False,False,0)
 		self.caja2.pack_start(self.tabla,False,False,0)
 		self.caja2.pack_start(self.tabla2,False,False,0)
 		self.caja2.pack_start(self.tabla3,False,False,0)
 		self.window.add(self.caja)
 
 		# Mostrando los respectivos elementos
+		self.scrolled_window.show()
 		self.vIcon.show()
 		self.entry.show()
 		self.plB.show()
