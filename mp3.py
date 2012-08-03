@@ -132,7 +132,8 @@ class ventana:
                 #Seccion con barras de desplazamiento
 		self.scrolled_window = gtk.ScrolledWindow()
 		self.scrolled_window.set_border_width(10)
-		self.scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+		self.scrolled_window.set_policy(gtk.POLICY_ALWAYS, gtk.POLICY_ALWAYS)
+
                 
 		# Control de volumen 
 		self.ajuste = gtk.Adjustment(0.0, 0.0, 101.0, 0.1, 1.0, 1.0)
