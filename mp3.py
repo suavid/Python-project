@@ -53,12 +53,17 @@ def scale_set_default_values(scale):
 # clase principal
 class ventana:
 
+        def importar(self,widget, data = None):
+                #Selector de ficheros
+		filew = gtk.FileSelection("File selection")
+                filew.show()
+        
 	# evento de borrado
 	def delete(self, widget, data = None):
 		return False
 
 	# detiene manejadores de enventos, termina ejecucion de la ventana
-	def close(self, widget, data = None):
+	def close(self,widget,data = None):
 		gtk.main_quit()
 
 	def main(self):
@@ -112,14 +117,12 @@ class ventana:
 		self.archivo.show()
 		self.editar.show()
 		self.ayuda.show()
+		self.item3.connect_object("activate", self.importar,None)
 		self.menu_bar = gtk.MenuBar()
 		self.menu_bar.show()	
 		self.menu_bar.append(self.archivo)
 		self.menu_bar.append(self.editar)
 		self.menu_bar.append(self.ayuda)
-
-
-                        
                 
 		# Control de volumen 
 		self.ajuste = gtk.Adjustment(0.0, 0.0, 101.0, 0.1, 1.0, 1.0)
