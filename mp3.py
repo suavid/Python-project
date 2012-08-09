@@ -144,11 +144,11 @@ class ventana:
                 self.vIcon.set_from_file("volumen.png") 
                 
 		# Botones para el reproductor
-		self.plB = buttonBox2(self.window,"play.png")
-		self.stB = buttonBox2(self.window,"stop.png")
-		self.neB = buttonBox2(self.window,"next.png")
-		self.prB = buttonBox2(self.window,"prev.png")
-		self.paB = buttonBox2(self.window,"pause.png")
+		self.plB = buttonBox2(self.window,"icons/play.png")
+		self.stB = buttonBox2(self.window,"icons/stop.png")
+		self.neB = buttonBox2(self.window,"icons/next.png")
+		self.prB = buttonBox2(self.window,"icons/prev.png")
+		self.paB = buttonBox2(self.window,"icons/pause.png")
 		self.play = gtk.Button()
 		self.stop = gtk.Button()
 		self.next = gtk.Button()
