@@ -4,7 +4,7 @@
 # evitar ejecucion de versiones anteriores
 import pygtk
 pygtk.require("2.0")
-import gtk
+import gtk,os,glob
 
 
 # funcion para creacion de botones con etiqueta e imagen
@@ -134,7 +134,25 @@ class ventana:
                 #Seccion con barras de desplazamiento
 		self.scrolled_window = gtk.ScrolledWindow()
 		self.scrolled_window.set_border_width(0)
-		self.scrolled_window.set_policy(gtk.POLICY_ALWAYS, gtk.POLICY_ALWAYS)
+		self.scrolled_window.set_size_request(100,200)
+		self.scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+		try:
+			self.dir_m = os.listdir(self.directorio)
+			self.l = len(self.dir_m)
+			self.cont = gtk.Table(1,self.l,True)
+			j = 0
+			for label in self.dir_m:
+				bt = gtk.Label(label)
+				self.cont.attach(bt,0,1,j,j+1,gtk.FILL,gtk.EXPAND,0,0)
+				j = j+1
+				bt.show()
+			self.cont.show()
+			self.scrolled_window.add_with_viewport(self.cont)
+		except:
+			self.alert = gtk.Label("No Ha seleccionado una carpeta aun")
+			self.alert.show()
+			self.scrolled_window.add_with_viewport(self.alert)
+		
 
 		# Control de volumen 
 		self.ajuste = gtk.Adjustment(0.0, 0.0, 101.0, 0.1, 1.0, 1.0)
