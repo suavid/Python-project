@@ -2,9 +2,9 @@
 
 # agregando librerias necesarias para la generacion de ventanas
 # evitar ejecucion de versiones anteriores
-import pygtk
+import pygtk,gtk
 pygtk.require("2.0")
-import gtk,os,glob
+import os,glob,tree
 
 
 # funcion para creacion de botones con etiqueta e imagen
@@ -55,14 +55,29 @@ class ventana:
 
         def file_ok_sel(self, w,campo):
                 self.directorio = campo.get_filename()
+		print self.directorio
                 
         def importar(self,widget, data = None):
-                #Selector de ficheros
-		imp_cpt = gtk.FileSelection("Seleccionar carpeta")
-		imp_cpt.ok_button.connect("clicked", self.file_ok_sel,imp_cpt)
-		imp_cpt.ok_button.connect("clicked", lambda w: imp_cpt.destroy())
-		imp_cpt.cancel_button.connect("clicked",lambda w: imp_cpt.destroy())
-                imp_cpt.show()
+		dialog = gtk.FileChooserDialog("Open..", None, gtk.FILE_CHOOSER_ACTION_OPEN,(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+		dialog.set_default_response(gtk.RESPONSE_OK)
+		dialog.set_select_multiple(True)
+		filter = gtk.FileFilter()
+		config = open("mp.config","a")
+		filter.set_name("*.mp3")
+		filter.add_mime_type("video/mpeg")
+		filter.add_mime_type("video/x-mpeg")
+		filter.add_mime_type("image/gif")
+		filter.add_pattern("*.mp3")
+		dialog.add_filter(filter)
+		response = dialog.run()
+		if response == gtk.RESPONSE_OK:
+    			for files in dialog.get_filenames():
+				config.write(files+"\n")
+		elif response == gtk.RESPONSE_CANCEL:
+    			print 'Closed, no files selected'
+		config.close()
+		dialog.destroy()
+
         
 	# evento de borrado
 	def delete(self, widget, data = None):
@@ -90,7 +105,8 @@ class ventana:
 		self.vol_box_icon = gtk.Table(1,1,False)
 		self.main_frame = gtk.VBox(False, 0)
 		self.div_2 = gtk.HBox(False, 0)
-                self.directorio = " "
+		self.configure = open("mp.config","r")
+                self.directorio = self.configure.readlines()
                 
 		#Entrada de texto para busqueda
 		self.campo_busq = gtk.Entry(0)
@@ -132,26 +148,8 @@ class ventana:
 		self.menu_bar.append(self.ayuda)
 
                 #Seccion con barras de desplazamiento
-		self.scrolled_window = gtk.ScrolledWindow()
-		self.scrolled_window.set_border_width(0)
-		self.scrolled_window.set_size_request(100,200)
-		self.scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-		try:
-			self.dir_m = os.listdir(self.directorio)
-			self.l = len(self.dir_m)
-			self.cont = gtk.Table(1,self.l,True)
-			j = 0
-			for label in self.dir_m:
-				bt = gtk.Label(label)
-				self.cont.attach(bt,0,1,j,j+1,gtk.FILL,gtk.EXPAND,0,0)
-				j = j+1
-				bt.show()
-			self.cont.show()
-			self.scrolled_window.add_with_viewport(self.cont)
-		except:
-			self.alert = gtk.Label("No Ha seleccionado una carpeta aun")
-			self.alert.show()
-			self.scrolled_window.add_with_viewport(self.alert)
+		self.vent_list = tree.create_tree()
+		tree.update_tree(self.directorio,self.vent_list)
 		
 
 		# Control de volumen 
@@ -189,7 +187,7 @@ class ventana:
 
 		# Empaquetados
 		self.main_frame.pack_start(self.menu_bar,False,False,0)
-		self.main_frame.pack_start(self.scrolled_window,False,False,0)
+		self.main_frame.pack_start(self.vent_list,False,False,0)
 		self.main_frame.pack_start(self.div_2,False,False,0)
 		self.div_2.pack_start(self.btn_nav,False,False,0)
 		self.div_2.pack_start(self.controles,False,False,0)
@@ -197,7 +195,7 @@ class ventana:
 		self.window.add(self.main_frame)
 
 		# Mostrando los respectivos elementos
-		self.scrolled_window.show()
+		self.vent_list.show()
 		self.vIcon.show()
 		self.campo_busq.show()
 		self.plB.show()
