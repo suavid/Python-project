@@ -8,32 +8,32 @@ import gtk
 
 
 # funcion para creacion de botones con etiqueta e imagen
-def buttonBox(parent,icon,label_text):
+def buttonBox(padre,icono,label_text):
 
-	# Crear caja para icon y label
+	# Crear main_frame para icon y label
 	box = gtk.HBox(True, 0)
 	# Creamos la imagen
-	image = gtk.Image()
-	image.set_from_file(icon)
+	imagen = gtk.Image()
+	imagen.set_from_file(icono)
 	# Creamos la etiqueta
 	label = gtk.Label(label_text)
-	# Empaquetamos icon y label en la caja
-	box.pack_start(image, False, False, 3)
+	# Empaquetamos icon y label en la main_frame
+	box.pack_start(imagen, False, False, 3)
 	box.pack_start(label, False, False, 3)
 	image.show()
 	label.show()
 	return box;
 
 # funcion para creacion de botones con imagen sin etiqueta
-def buttonBox2(parent,icon):
+def buttonBox2(padre,icono):
 
-	# Crear caja para icon
+	# Crear main_frame para icon
 	box = gtk.HBox(True, 0)
 	box.set_border_width(2)
 	# Creamos la imagen
 	image = gtk.Image()
-	image.set_from_file(icon)
-	# Empaquetamos icon en la caja
+	image.set_from_file(icono)
+	# Empaquetamos icon en la main_frame
 	box.pack_start(image, False, False, 3)
 	image.show()
 	return box;
@@ -58,11 +58,11 @@ class ventana:
                 
         def importar(self,widget, data = None):
                 #Selector de ficheros
-		filew = gtk.FileSelection("Seleccionar carpeta")
-		filew.ok_button.connect("clicked", self.file_ok_sel,filew)
-		filew.ok_button.connect("clicked", lambda w: filew.destroy())
-		filew.cancel_button.connect("clicked",lambda w: filew.destroy())
-                filew.show()
+		imp_cpt = gtk.FileSelection("Seleccionar carpeta")
+		imp_cpt.ok_button.connect("clicked", self.file_ok_sel,imp_cpt)
+		imp_cpt.ok_button.connect("clicked", lambda w: imp_cpt.destroy())
+		imp_cpt.cancel_button.connect("clicked",lambda w: imp_cpt.destroy())
+                imp_cpt.show()
         
 	# evento de borrado
 	def delete(self, widget, data = None):
@@ -84,47 +84,47 @@ class ventana:
 		self.window.set_title("Reproductor Mp3")
 		self.window.set_border_width(0)
                 
-		# Creacion de las tablas y cajas
-		self.tabla = gtk.Table(9,1,True)
-		self.tabla2 = gtk.Table(3,1,True)
-		self.tabla3 = gtk.Table(1,1,False)
-		self.caja = gtk.VBox(False, 0)
-		self.caja2 = gtk.HBox(False, 0)
+		# Creacion de las tablas y main_frames
+		self.btn_nav = gtk.Table(9,1,True)
+		self.controles = gtk.Table(3,1,True)
+		self.vol_box_icon = gtk.Table(1,1,False)
+		self.main_frame = gtk.VBox(False, 0)
+		self.div_2 = gtk.HBox(False, 0)
                 self.directorio = " "
                 
 		#Entrada de texto para busqueda
-		self.entry = gtk.Entry(0)
-		self.entry.set_text("Busqueda...")
+		self.campo_busq = gtk.Entry(0)
+		self.campo_busq.set_text("Busqueda...")
 
 		# menu
-		self.menu = gtk.Menu()
-		self.menu2 = gtk.Menu()
-		self.menu3 = gtk.Menu()
-  		self.item1 = gtk.MenuItem("Abrir")
-  		self.item2 = gtk.MenuItem("Actualizar")
-  		self.item3 = gtk.MenuItem("Importar")
-		self.item4 = gtk.MenuItem("Preferencias")
-		self.item5 = gtk.MenuItem("Help F2")
-		self.item1.show()
-  		self.item2.show()
-  		self.item3.show()
-		self.item4.show()
-		self.item5.show()
- 		self.menu.append(self.item1)
-  		self.menu.append(self.item2)
-  		self.menu.append(self.item3)
-		self.menu2.append(self.item4)
-		self.menu3.append(self.item5)
+		self.submenu_1 = gtk.Menu()
+		self.submenu_2 = gtk.Menu()
+		self.submenu_3 = gtk.Menu()
+  		self.item1_1 = gtk.MenuItem("Abrir")
+  		self.item1_2 = gtk.MenuItem("Actualizar")
+  		self.item1_3 = gtk.MenuItem("Importar")
+		self.item2_1 = gtk.MenuItem("Preferencias")
+		self.item3_1 = gtk.MenuItem("Help F2")
+		self.item1_1.show()
+  		self.item1_2.show()
+  		self.item1_3.show()
+		self.item2_1.show()
+		self.item3_1.show()
+ 		self.submenu_1.append(self.item1_1)
+  		self.submenu_1.append(self.item1_2)
+  		self.submenu_1.append(self.item1_3)
+		self.submenu_2.append(self.item2_1)
+		self.submenu_3.append(self.item3_1)
 		self.archivo = gtk.MenuItem("Archivo")
 		self.editar = gtk.MenuItem("Editar")
 		self.ayuda = gtk.MenuItem("Ayuda")
-		self.archivo.set_submenu(self.menu)
-		self.editar.set_submenu(self.menu2)
-		self.ayuda.set_submenu(self.menu3)
+		self.archivo.set_submenu(self.submenu_1)
+		self.editar.set_submenu(self.submenu_2)
+		self.ayuda.set_submenu(self.submenu_3)
 		self.archivo.show()
 		self.editar.show()
 		self.ayuda.show()
-		self.item3.connect_object("activate", self.importar,None)
+		self.item1_3.connect_object("activate", self.importar,None)
 		self.menu_bar = gtk.MenuBar()
 		self.menu_bar.show()	
 		self.menu_bar.append(self.archivo)
@@ -141,7 +141,7 @@ class ventana:
 		self.control = gtk.HScale(self.ajuste)
 		scale_set_default_values(self.control)
                 self.vIcon = gtk.Image()
-                self.vIcon.set_from_file("volumen.png") 
+                self.vIcon.set_from_file("icons/volumen.png") 
                 
 		# Botones para el reproductor
 		self.plB = buttonBox2(self.window,"icons/play.png")
@@ -160,28 +160,28 @@ class ventana:
 		self.prev.add(self.prB)
 		self.pause.add(self.paB)
 		# Pocisionando en tabla
-		self.tabla.attach(self.play,0,1,0,1,gtk.FILL,gtk.FILL,0,0)
-		self.tabla.attach(self.stop,1,2,0,1,gtk.FILL,gtk.FILL,0,0)
-		self.tabla.attach(self.next,2,3,0,1,gtk.FILL,gtk.FILL,0,0)
-		self.tabla.attach(self.prev,3,4,0,1,gtk.FILL,gtk.FILL,0,0)
-		self.tabla.attach(self.pause,4,5,0,1,gtk.FILL,gtk.FILL,0,0)
-		self.tabla3.attach(self.vIcon,0,1,0,1,gtk.FILL,gtk.FILL,10,10)
-		self.tabla2.attach(self.control,1,2,0,1,gtk.FILL,gtk.FILL,0,0)
-		self.tabla2.attach(self.entry,0,1,0,1,gtk.FILL,gtk.FILL,10,10)
+		self.btn_nav.attach(self.play,0,1,0,1,gtk.FILL,gtk.FILL,0,0)
+		self.btn_nav.attach(self.stop,1,2,0,1,gtk.FILL,gtk.FILL,0,0)
+		self.btn_nav.attach(self.next,2,3,0,1,gtk.FILL,gtk.FILL,0,0)
+		self.btn_nav.attach(self.prev,3,4,0,1,gtk.FILL,gtk.FILL,0,0)
+		self.btn_nav.attach(self.pause,4,5,0,1,gtk.FILL,gtk.FILL,0,0)
+		self.vol_box_icon.attach(self.vIcon,0,1,0,1,gtk.FILL,gtk.FILL,10,10)
+		self.controles.attach(self.control,1,2,0,1,gtk.FILL,gtk.FILL,0,0)
+		self.controles.attach(self.campo_busq,0,1,0,1,gtk.FILL,gtk.FILL,10,10)
 
 		# Empaquetados
-		self.caja.pack_start(self.menu_bar,False,False,0)
-		self.caja.pack_start(self.scrolled_window,False,False,0)
-		self.caja.pack_start(self.caja2,False,False,0)
-		self.caja2.pack_start(self.tabla,False,False,0)
-		self.caja2.pack_start(self.tabla2,False,False,0)
-		self.caja2.pack_start(self.tabla3,False,False,0)
-		self.window.add(self.caja)
+		self.main_frame.pack_start(self.menu_bar,False,False,0)
+		self.main_frame.pack_start(self.scrolled_window,False,False,0)
+		self.main_frame.pack_start(self.div_2,False,False,0)
+		self.div_2.pack_start(self.btn_nav,False,False,0)
+		self.div_2.pack_start(self.controles,False,False,0)
+		self.div_2.pack_start(self.vol_box_icon,False,False,0)
+		self.window.add(self.main_frame)
 
 		# Mostrando los respectivos elementos
 		self.scrolled_window.show()
 		self.vIcon.show()
-		self.entry.show()
+		self.campo_busq.show()
 		self.plB.show()
 		self.stB.show()
 		self.neB.show()
@@ -193,11 +193,11 @@ class ventana:
 		self.prev.show()
 		self.pause.show()
 		self.control.show()
-		self.tabla.show()
-		self.tabla2.show()
-		self.tabla3.show()
-		self.caja.show()
-		self.caja2.show()
+		self.btn_nav.show()
+		self.controles.show()
+		self.vol_box_icon.show()
+		self.main_frame.show()
+		self.div_2.show()
 		self.window.show()
 
 # programa principal
