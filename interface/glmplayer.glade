@@ -2,8 +2,17 @@
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
+  <object class="GtkListStore" id="media">
+    <columns>
+      <!-- column-name Archivo -->
+      <column type="gchararray"/>
+      <!-- column-name Ruta -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkWindow" id="ventana_principal">
     <property name="visible">True</property>
+    <property name="title" translatable="yes">GLMPLayer</property>
     <property name="window_position">center</property>
     <property name="default_width">440</property>
     <property name="default_height">250</property>
@@ -38,33 +47,6 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="abrir">
-                        <property name="label">gtk-open</property>
-                        <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                        <property name="accel_group">accelgroup1</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="Guardar">
-                        <property name="label">gtk-save</property>
-                        <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                        <property name="accel_group">accelgroup1</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="Guardar como">
-                        <property name="label">gtk-save-as</property>
-                        <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                        <property name="accel_group">accelgroup1</property>
-                      </object>
-                    </child>
-                    <child>
                       <object class="GtkSeparatorMenuItem" id="separador_archivo">
                         <property name="visible">True</property>
                       </object>
@@ -76,38 +58,11 @@
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accelgroup1</property>
+                        <signal name="activate" handler="on_salir_activate"/>
                       </object>
                     </child>
                   </object>
                 </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="editar">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">_Editar</property>
-                <property name="use_underline">True</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="editar_child">
-                    <property name="visible">True</property>
-                    <child>
-                      <object class="GtkImageMenuItem" id="preferencias">
-                        <property name="label">gtk-preferences</property>
-                        <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                        <property name="accel_group">accelgroup1</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="ver">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">_Ver</property>
-                <property name="use_underline">True</property>
               </object>
             </child>
             <child>
@@ -125,6 +80,7 @@
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accelgroup1</property>
+                        <signal name="activate" handler="on_ayud_activate"/>
                       </object>
                     </child>
                   </object>
@@ -147,8 +103,25 @@
               <object class="GtkTreeView" id="arbol_pistas">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="border_width">10</property>
+                <property name="model">media</property>
+                <property name="reorderable">True</property>
                 <property name="rules_hint">True</property>
-                <property name="search_column">1</property>
+                <property name="enable_grid_lines">both</property>
+                <property name="enable_tree_lines">True</property>
+                <child>
+                  <object class="GtkTreeViewColumn" id="Archivos">
+                    <property name="title">Pistas</property>
+                    <property name="clickable">True</property>
+                    <property name="reorderable">True</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="Textos"/>
+                      <attributes>
+                        <attribute name="text">0</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
               </object>
             </child>
           </object>
@@ -168,6 +141,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_play_clicked"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -182,6 +156,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_pause_clicked"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -196,6 +171,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_prev_clicked"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -210,6 +186,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_next_clicked"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -224,6 +201,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_stop_clicked"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -307,6 +285,15 @@
             <property name="position">4</property>
           </packing>
         </child>
+        <child>
+          <object class="GtkHSeparator" id="hseparator2">
+            <property name="visible">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">5</property>
+          </packing>
+        </child>
       </object>
     </child>
   </object>
@@ -319,8 +306,9 @@
   <object class="GtkAccelGroup" id="accelgroup1"/>
   <object class="GtkFileChooserDialog" id="Add">
     <property name="border_width">5</property>
+    <property name="title" translatable="yes">Importar M&#xFA;sica</property>
+    <property name="window_position">center</property>
     <property name="type_hint">normal</property>
-    <property name="has_separator">False</property>
     <property name="create_folders">False</property>
     <property name="select_multiple">True</property>
     <child internal-child="vbox">
@@ -336,16 +324,102 @@
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>
-              <placeholder/>
+              <object class="GtkButton" id="brir">
+                <property name="label">gtk-open</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkButton" id="cancelar">
+                <property name="label">gtk-cancel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
             </child>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="pack_type">end</property>
             <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="-5">brir</action-widget>
+      <action-widget response="-6">cancelar</action-widget>
+    </action-widgets>
+  </object>
+  <object class="GtkWindow" id="About">
+    <property name="border_width">36</property>
+    <property name="title" translatable="yes">Acerca de</property>
+    <property name="window_position">center</property>
+    <signal name="destroy" handler="on_About_destroy"/>
+    <child>
+      <object class="GtkVBox" id="vbox1">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkLabel" id="GLMPlayer">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">GLMPlayer</property>
+            <property name="use_underline">True</property>
+            <attributes>
+              <attribute name="weight" value="ultrabold"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="descripcion">
+            <property name="visible">True</property>
+            <property name="xpad">19</property>
+            <property name="label" translatable="yes">glmplayer es un reproductor capaz de reproducir diferentes formatos de sonido
+y de realizar streaming en vivo o grabaciones de audio.
+
+Para m&#xE1;s informaci&#xF3;n contactar con los desarrolladodes, si has probado esta
+aplicaci&#xF3;n nos gustar&#xED;a conocer tu opini&#xF3;n, por favor escribenos</property>
+          </object>
+          <packing>
+            <property name="padding">12</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHBox" id="hbox1">
+            <property name="visible">True</property>
+            <child>
+              <object class="GtkLabel" id="correo">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Desarrolador: william.parras.mendez@gmail.com
+                  Grupo GNU/LINUX UDB EIC</property>
+              </object>
+              <packing>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
