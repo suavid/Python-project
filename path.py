@@ -1,0 +1,1 @@
+PATH = "interface/glmplayer.glade"
