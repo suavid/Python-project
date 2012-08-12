@@ -238,8 +238,7 @@
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="padding">28</property>
+            <property name="padding">2</property>
             <property name="position">4</property>
           </packing>
         </child>
@@ -308,6 +307,9 @@
             </child>
           </object>
           <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="padding">10</property>
             <property name="position">6</property>
           </packing>
         </child>
@@ -326,8 +328,8 @@
     <property name="title" translatable="yes">Importar M&#xFA;sica</property>
     <property name="window_position">center</property>
     <property name="type_hint">normal</property>
-    <property name="select_multiple">True</property>
     <property name="create_folders">False</property>
+    <property name="select_multiple">True</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialogo">
         <property name="visible">True</property>
