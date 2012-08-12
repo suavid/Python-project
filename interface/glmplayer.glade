@@ -94,31 +94,39 @@
           </packing>
         </child>
         <child>
-          <object class="GtkScrolledWindow" id="pistas">
+          <object class="GtkViewport" id="viewport1">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="hscrollbar_policy">automatic</property>
-            <property name="vscrollbar_policy">automatic</property>
+            <property name="resize_mode">queue</property>
             <child>
-              <object class="GtkTreeView" id="arbol_pistas">
+              <object class="GtkScrolledWindow" id="pistas">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="border_width">10</property>
-                <property name="model">media</property>
-                <property name="reorderable">True</property>
-                <property name="rules_hint">True</property>
-                <property name="enable_grid_lines">both</property>
-                <property name="enable_tree_lines">True</property>
+                <property name="hscrollbar_policy">automatic</property>
+                <property name="vscrollbar_policy">automatic</property>
+                <property name="shadow_type">out</property>
                 <child>
-                  <object class="GtkTreeViewColumn" id="Archivos">
-                    <property name="title">Pistas</property>
-                    <property name="clickable">True</property>
+                  <object class="GtkTreeView" id="arbol_pistas">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="border_width">10</property>
+                    <property name="model">media</property>
                     <property name="reorderable">True</property>
+                    <property name="rules_hint">True</property>
+                    <property name="search_column">0</property>
+                    <property name="enable_grid_lines">both</property>
+                    <property name="enable_tree_lines">True</property>
                     <child>
-                      <object class="GtkCellRendererText" id="Textos"/>
-                      <attributes>
-                        <attribute name="text">0</attribute>
-                      </attributes>
+                      <object class="GtkTreeViewColumn" id="Archivos">
+                        <property name="title">Pistas</property>
+                        <property name="clickable">True</property>
+                        <property name="reorderable">True</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="Textos"/>
+                          <attributes>
+                            <attribute name="text">0</attribute>
+                          </attributes>
+                        </child>
+                      </object>
                     </child>
                   </object>
                 </child>
@@ -127,6 +135,24 @@
           </object>
           <packing>
             <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHSeparator" id="hseparator1">
+            <property name="visible">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHSeparator" id="hseparator3">
+            <property name="visible">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">3</property>
           </packing>
         </child>
         <child>
@@ -214,16 +240,16 @@
             <property name="expand">False</property>
             <property name="fill">False</property>
             <property name="padding">28</property>
-            <property name="position">2</property>
+            <property name="position">4</property>
           </packing>
         </child>
         <child>
-          <object class="GtkHSeparator" id="hseparator1">
+          <object class="GtkHSeparator" id="hseparator2">
             <property name="visible">True</property>
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="position">3</property>
+            <property name="position">5</property>
           </packing>
         </child>
         <child>
@@ -282,16 +308,7 @@
             </child>
           </object>
           <packing>
-            <property name="position">4</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkHSeparator" id="hseparator2">
-            <property name="visible">True</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="position">5</property>
+            <property name="position">6</property>
           </packing>
         </child>
       </object>
@@ -309,8 +326,8 @@
     <property name="title" translatable="yes">Importar M&#xFA;sica</property>
     <property name="window_position">center</property>
     <property name="type_hint">normal</property>
-    <property name="create_folders">False</property>
     <property name="select_multiple">True</property>
+    <property name="create_folders">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialogo">
         <property name="visible">True</property>

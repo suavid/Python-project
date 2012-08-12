@@ -4,10 +4,14 @@
 # path: modulo propio con rutas y mensajes personalizados
 # os: permite comunicar con el os
 import gtk,path,os
+from xml.dom.minidom import Document
+from xml.dom import minidom
 # Describe los tipos de archivos permitidos con una tupla
 filepattern = (
          ("MP3","*.mp3"),
         )
+    
+     
 # Clase principal
 class main:
 	# Definicion de la funcion __init__ que construye la clase
@@ -23,6 +27,12 @@ class main:
 		self.filtro = gtk.FileFilter() 
 	 # Obtiene el objeto gtkliststore de glade y lo conecta	
 		self.medialist = builder.get_object("media")
+		try:
+			dom = minidom.parse("playlist/track.xml")
+			for i in range(0,len(dom.getElementsByTagName("track"))):
+				self.medialist.append([dom.getElementsByTagName("track")[i].firstChild.data,dom.getElementsByTagName("ruta")[i].firstChild.data])
+		except:
+			pass
     # Diccionario de eventos y Conexion de los mismos.
 		dict = {"on_agregar_activate": self.abrir_archivos,
 		"gtk_main_quit":self.destroy,
@@ -56,11 +66,32 @@ class main:
 		# Termina ejecucion y se esconde la ventana
 		self.agregar_ventana.hide()
 		# Se procesa la respuesta de la ventana, -5 abrir -6 cancelar
+		xmldocument = open("playlist/track.xml","w")
+		# Crea el documento minidom 
+		doc = Document()
+		# Crea el elemento base <wml> 
+		wml = doc.createElement("wml")
+		#lo agrega al documento
+		doc.appendChild(wml)
 		if respt == -5:        
 			fileselected = self.agregar_ventana.get_filenames()
 			for files in fileselected:
 				(dirs,files)= os.path.split(files)
 				self.medialist.append([files,dirs])
+				# Crea elemento pista <pista> 
+				maincard = doc.createElement("pista")
+				wml.appendChild(maincard)
+				nm = doc.createElement("track")
+				maincard.appendChild(nm)
+				nombre = doc.createTextNode(files)
+				nm.appendChild(nombre)
+				dr = doc.createElement("ruta")
+				maincard.appendChild(dr)
+				path = doc.createTextNode(dirs)
+				dr.appendChild(path)
+		xmldocument.write(doc.toprettyxml(indent="  "))
+		xmldocument.close()	
+				
 	def about(self,widget):
 		self.help.show()
 	def close(self,widget):
