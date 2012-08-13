@@ -6,12 +6,16 @@
 import gtk,path,os
 from xml.dom.minidom import Document
 from xml.dom import minidom
+import gst
 # Describe los tipos de archivos permitidos con una tupla
 filepattern = (
          ("MP3","*.mp3"),
-        )
-    
-     
+        ) 
+def reverse(list):
+	if len(list)==1:
+		return list
+	else:
+		return list[-1]+reverse(list[:-1])             
 # Clase principal
 class main:
 	# Definicion de la funcion __init__ que construye la clase
@@ -24,9 +28,14 @@ class main:
 		self.agregar_ventana = builder.get_object("Add")
 		self.help = builder.get_object("About")
 	 # Crea un filtro para aplicarlo a la seleccion de archivos
-		self.filtro = gtk.FileFilter() 
+		self.filtro = gtk.FileFilter()
+		self.rep = 0 
 	 # Obtiene el objeto gtkliststore de glade y lo conecta	
 		self.medialist = builder.get_object("media")
+		self.sel = builder.get_object("selec")
+		self.tree = builder.get_object("arbol_pistas")
+		self.ar = builder.get_object("Archivos")
+		self.te = builder.get_object("Textos")
 		try:
 			dom = minidom.parse("playlist/track.xml")
 			for i in range(0,len(dom.getElementsByTagName("track"))):
@@ -45,6 +54,14 @@ class main:
 		"on_About_destroy":self.close,
 		"on_salir_activate":self.destroy
 		}
+		
+		self.player = gst.element_factory_make("playbin2", "player")
+		bus = self.player.get_bus()
+		bus.add_signal_watch()
+		bus.enable_sync_message_emission()
+		bus.connect("message", self.on_message)
+		bus.connect("sync-message::element", self.on_sync_message)
+		
 	  # Conecta 
 		builder.connect_signals(dict)
 	# Definicion de la funcion para agregar archivos de sonido
@@ -91,6 +108,70 @@ class main:
 				dr.appendChild(path)
 		xmldocument.write(doc.toprettyxml(indent="  "))
 		xmldocument.close()	
+		
+	def on_message(self, bus, message):
+		t = message.type
+		if t == gst.MESSAGE_EOS:
+			self.player.set_state(gst.STATE_NULL)
+		elif t == gst.MESSAGE_ERROR:
+			self.player.set_state(gst.STATE_NULL)
+			err, debug = message.parse_error()
+			print "Error: %s" % err, debug
+	
+	def on_sync_message(self, bus, message):
+		if message.structure is None:
+			return
+		message_name = message.structure.get_name()
+		if message_name == "prepare-xwindow-id":
+			imagesink = message.src
+			imagesink.set_property("force-aspect-ratio", True)
+			gtk.gdk.threads_enter()
+			imagesink.set_xwindow_id(self.movie_window.window.xid)
+			gtk.gdk.threads_leave()	
+		
+	def on_tree_selection_changed(self,selection):
+		model, treeiter = selection.get_selected()
+		if treeiter != None:
+			palabra = ""
+			contador = 0
+			for letra in model[treeiter][1]:
+				if letra != "\n":
+					if letra == " " and contador == 0:
+						pass
+					else:	
+						palabra = palabra+letra
+						contador = contador+1
+			contador = 0
+			palabra = reverse(palabra)
+			nueva = ""
+			for letra in palabra:
+				if letra != "\n":
+					if letra == " " and contador == 0:
+						pass
+					else:	
+						nueva = nueva+letra
+						contador = contador+1
+			palabra = reverse(nueva)+"/"
+			contador = 0			
+			for letra in model[treeiter][0]:
+				if letra != "\n":
+					if letra == " " and contador == 0:
+							pass
+					else:	
+						palabra = palabra+letra
+						contador = contador+1
+			contador = 0
+			palabra = reverse(palabra)
+			nueva = ""
+			for letra in palabra:
+				if letra != "\n":
+					if letra == " " and contador == 0:
+						pass
+					else:	
+						nueva = nueva+letra
+						contador = contador+1			 
+			palabra = reverse(nueva)
+			return palabra 	
 				
 	def about(self,widget):
 		self.help.show()
@@ -102,8 +183,12 @@ class main:
 		
 	# Funciones para los botones, posteriormente seran definidas
 	def play(self,widget):
-		# funcion de reproduccion
-		pass
+		self.stop(widget)
+		self.rep = 1
+		select = self.tree.get_selection()
+		filepath = self.on_tree_selection_changed(select)
+		self.player.set_property("uri", "file://"+filepath)
+		self.player.set_state(gst.STATE_PLAYING)
 	def pause(self,widget):
 		# funcion de pausa
 		pass
@@ -115,7 +200,11 @@ class main:
 		pass
 	def stop(self,widget):
 		# funcion de alto
-		pass				
+		if self.rep == 1:
+			self.player.set_state(gst.STATE_NULL)
+			self.rep = 0
+		else:
+			pass		
          
 #Ejecucion del programa
 if __name__ == "__main__":

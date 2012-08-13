@@ -328,8 +328,8 @@
     <property name="title" translatable="yes">Importar M&#xFA;sica</property>
     <property name="window_position">center</property>
     <property name="type_hint">normal</property>
-    <property name="create_folders">False</property>
     <property name="select_multiple">True</property>
+    <property name="create_folders">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialogo">
         <property name="visible">True</property>
@@ -444,4 +444,5 @@ aplicaci&#xF3;n nos gustar&#xED;a conocer tu opini&#xF3;n, por favor escribenos<
       </object>
     </child>
   </object>
+  <object class="GtkTreeSelection" id="selec"/>
 </interface>
