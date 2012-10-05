@@ -5,13 +5,20 @@
 # os: permite comunicar con el os
 # xml.dom.minidom para manejo de documentos xml
 import gtk,path,os
-from xml.dom.minidom import Document
-from xml.dom import minidom
-import gst
+import MySQLdb
+import gst,subprocess
+import eyeD3
+from mutagen.mp3 import MP3
 # Describe los tipos de archivos permitidos con una tupla
 filepattern = (
          ("MP3","*.mp3"),
         ) 
+
+db=MySQLdb.connect(host='localhost',user='root',passwd='123456',db='pistas')
+cursor=db.cursor()
+sql='SELECT * FROM data;'
+cursor.execute(sql)
+resultado=cursor.fetchall()
 # funcion para revertir una cadena de caracteres
 def reverse(list):
 	if len(list)==1:
@@ -40,18 +47,9 @@ class main:
 	 # Obtiene el gtk.TreeWiev
 		self.tree = builder.get_object("arbol_pistas")
 	 # Obtiene el objeto Archivos que contiene el texto
-		self.ar = builder.get_object("Archivos")
-	 # Obtiene el gtk.Text hijo de Archivos
-		self.te = builder.get_object("Textos")
+		self.info = builder.get_object("info")
+		self.info.set_text("No se ha reproducido nada aun")
 	# Lee las pistas del documento XML	
-		try:
-			# Conecta al documento
-			dom = minidom.parse("playlist/track.xml")
-			# Agrega las pistas al medialist
-			for i in range(0,len(dom.getElementsByTagName("track"))):
-				self.medialist.append([dom.getElementsByTagName("track")[i].firstChild.data,dom.getElementsByTagName("ruta")[i].firstChild.data])
-		except:
-			pass
     # Diccionario de eventos y Conexion de los mismos.
 		dict = {"on_agregar_activate": self.abrir_archivos,
 		"gtk_main_quit":self.destroy,
@@ -62,7 +60,8 @@ class main:
 		"on_stop_clicked":self.stop,
 		"on_ayud_activate":self.about,
 		"on_About_destroy":self.close,
-		"on_salir_activate":self.destroy
+		"on_salir_activate":self.destroy,
+		"on_volumen_value_changed":self.cb_master_slider_change
 		}
 		
 		# Conecta 
@@ -72,7 +71,7 @@ class main:
 		self.player = gst.element_factory_make("playbin2", "player")
 		# Obtiene el Bus
 		bus = self.player.get_bus()
-		# Agrega un vigilador de señales
+		# Agrega un vigilador de senales
 		bus.add_signal_watch()
 		# Habilita la emision de senales, esto ayuda con el control de Errores
 		bus.enable_sync_message_emission()
@@ -80,6 +79,23 @@ class main:
 		bus.connect("message", self.on_message)
 		bus.connect("sync-message::element", self.on_sync_message)
 		
+
+		if len(resultado) > 0:
+			for registro in resultado:
+				self.medialist.append([registro[0],registro[1]])
+		else:
+			self.medialist.append(['No se ha importado nada Todavia','...'])
+
+
+
+
+	def cb_master_slider_change(self, widget,event,data=None):
+		try:
+			val = widget.get_value()
+			proc = subprocess.Popen('/usr/bin/amixer sset Master ' + str(val) + '%', shell=True, stdout=subprocess.PIPE)
+			proc.wait()
+		except:
+			pass	
 	# Definicion de la funcion para agregar archivos de sonido
 	def abrir_archivos(self,widget):
 		# Tipos de archivos agregables
@@ -98,36 +114,15 @@ class main:
 		self.agregar_ventana.remove_filter(self.filtro)
 		# Termina ejecucion y se esconde la ventana
 		self.agregar_ventana.hide()
-		# Abre en modo escritura el documento de pistas para sobreescribir
-		# Esto debe arreglarse
-		xmldocument = open("playlist/track.xml","w")
-		# Crea el documento minidom 
-		doc = Document()
-		# Crea el elemento base <wml> 
-		wml = doc.createElement("wml")
-		# Lo agrega al documento
-		doc.appendChild(wml)
-		# Se procesa la respuesta de la ventana, -5 abrir -6 cancelar
-		if respt == -5:        
+		if respt == -5:
 			fileselected = self.agregar_ventana.get_filenames()
 			for files in fileselected:
 				(dirs,files)= os.path.split(files)
-				self.medialist.append([files,dirs])
-				# Crea elemento pista <pista> 
-				maincard = doc.createElement("pista")
-				wml.appendChild(maincard)
-				nm = doc.createElement("track")
-				maincard.appendChild(nm)
-				nombre = doc.createTextNode(files)
-				nm.appendChild(nombre)
-				dr = doc.createElement("ruta")
-				maincard.appendChild(dr)
-				path = doc.createTextNode(dirs)
-				dr.appendChild(path)
-		# guarda en el documento
-		xmldocument.write(doc.toprettyxml(indent="  "))
-		# cierra el documento
-		xmldocument.close()
+				sql = """INSERT INTO `data`(`nombre`, `ruta`) \
+                VALUES ('%s', '%s');""" % (files,dirs)
+				if cursor.execute(sql):
+					self.medialist.append([files,dirs])
+
 			
 	# Funcion que emite los mensajes, asignada anteriomente 
 	def on_message(self, bus, message):
@@ -217,15 +212,29 @@ class main:
 		
 	# Funciones para los botones, posteriormente seran definidas
 	def play(self,widget):
-		self.stop(widget)
-		self.rep = 1
-		select = self.tree.get_selection()
-		# Llama a la funcion que trata la ruta
-		filepath = self.on_tree_selection_changed(select)
-		# Envia la ruta al objeto de gstreamer 
-		self.player.set_property("uri", "file://"+filepath)
-		# Reproduce
-		self.player.set_state(gst.STATE_PLAYING)
+		try:	
+			self.stop(widget)
+			self.rep = 1
+			select = self.tree.get_selection()
+			# Llama a la funcion que trata la ruta
+			filepath = self.on_tree_selection_changed(select)
+			tag = eyeD3.Tag()
+			audio = MP3(filepath)
+			try:
+				duration = audio.info.length
+			except:
+				pass
+			tag.link(filepath)
+			try:
+				self.info.set_text(" Now Playing... "+tag.getArtist()+" - "+tag.getAlbum()+" - "+tag.getTitle()+"  ")
+				# Envia la ruta al objeto de gstreamer 
+				self.player.set_property("uri", "file://"+filepath)
+				# Reproduce
+				self.player.set_state(gst.STATE_PLAYING)
+			except:
+				pass
+		except:
+			pass
 		
 	def pause(self,widget):
 		# funcion de pausa
@@ -241,10 +250,14 @@ class main:
 		
 	def stop(self,widget):
 		# funcion de alto
-		if self.rep == 1:
-			self.player.set_state(gst.STATE_NULL)
-			self.rep = 0
-		else:
+		try:
+			if self.rep == 1:
+				self.player.set_state(gst.STATE_NULL)
+				self.rep = 0
+				self.info.set_text(" Se ha detenido la reproduccion")
+			else:
+				pass
+		except:
 			pass		
          
 #Ejecucion del programa
