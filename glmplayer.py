@@ -24,7 +24,7 @@ import webbrowser
 filepattern = (
          ("MP3","*.mp3"),
         ) 
-auth = tweepy.OAuthHandler('V6yc6n5Mp7L8SATCxzrbHg','SOvHZc2w0v8XCZrBbMriat3QJfuynkvOQRV2xvIF50')
+#No se incluye la conexion con twitter por seguridad.. aqui debería ir
 # CLASE PRINCIPAL
 class main:
 
