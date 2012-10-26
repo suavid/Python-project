@@ -4,8 +4,6 @@ PATH = "glmplayer.glade"
 
 TRACK = "track.xml"
 
-OAUTH = "OAuth.xml"
-
 # funcion para invertir una cadena de caracteres
 def reverse(list):
 	if len(list)==1:

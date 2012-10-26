@@ -200,6 +200,7 @@ class main:
 	def login(self,widget):
 		Log = LOG(self.login_state,self.plog,self.info)
 		Log.start()
+
 # CONTROLADOR DE INICIO DE SESION 
 	def login_state(self):
 		found = -1
@@ -458,8 +459,8 @@ class main:
 				nm.appendChild(nombre)
 				dr = dom.createElement("ruta")
 				maincard.appendChild(dr)
-				paths = dom.createTextNode(dirs)
-				dr.appendChild(paths)
+				path = dom.createTextNode(dirs)
+				dr.appendChild(path)
 			xmldocument = open(path.TRACK,"w")
 			dom.writexml(xmldocument)
 			xmldocument.close()
