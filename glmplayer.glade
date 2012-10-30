@@ -1181,16 +1181,16 @@ proporciona para su usuario</property>
             <child>
               <object class="GtkLabel" id="label22">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Soporte para video no disponible en esta versi&#xF3;n</property>
+                <property name="label" translatable="yes">Panel de preferencias no habilitado en esta versi&#xF3;n</property>
               </object>
               <packing>
                 <property name="position">2</property>
               </packing>
             </child>
             <child type="tab">
-              <object class="GtkImage" id="image6">
+              <object class="GtkImage" id="image2">
                 <property name="visible">True</property>
-                <property name="pixbuf">video.png</property>
+                <property name="stock">gtk-properties</property>
               </object>
               <packing>
                 <property name="position">2</property>
@@ -1316,8 +1316,8 @@ audio-volume-medium</property>
     <property name="title" translatable="yes">Importar M&#xFA;sica</property>
     <property name="window_position">center</property>
     <property name="type_hint">normal</property>
-    <property name="create_folders">False</property>
     <property name="select_multiple">True</property>
+    <property name="create_folders">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialogo">
         <property name="visible">True</property>

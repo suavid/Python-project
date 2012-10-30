@@ -53,7 +53,6 @@ class main:
 		##########################################################################
 		##########################################################################
 		# OBJETOS ACTIVOS EN LA VENTANA
-		self.t_bt_home = builder.get_object("Home")
 		self.tree = builder.get_object("arbol_pistas")
 		self.medialist = builder.get_object("media")
 		self.sel = builder.get_object("selec")
@@ -78,18 +77,9 @@ class main:
 		self.step2 = builder.get_object("step2")
 		self.logged = builder.get_object("logged")
 		self.plog = builder.get_object("statuslog")
-		self.tweet = builder.get_object("n_tweet")
 		self.stock_interp = builder.get_object("stock_interp")
 		self.stock_titulo = builder.get_object("stock_titulo")
 		self.stock_album = builder.get_object("stock_album")
-		self.toogle_N_T_btn = builder.get_object("N_T")
-		self.nuevosT = builder.get_object("nuevosT")
-		self.toogle_Recientes_btn = builder.get_object("Recientes")
-		self.Rec = builder.get_object("Rec")
-		self.toogle_Home_btn = builder.get_object("Home")
-		self.Hom = builder.get_object("Home_pane")
-		self.toogle_Follows_btn = builder.get_object("Follows")
-		self.follow_pane = builder.get_object("follow_pane")
 		###########################################################################
 		###########################################################################
 		# OTRAS ACCIONES
